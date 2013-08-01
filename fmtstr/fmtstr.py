@@ -85,7 +85,8 @@ class FmtStr(object):
             if isinstance(x, dict):
                 cur_fmt.update(x)
             elif isinstance(x, basestring):
-                atts = parse_args('', {k:v for k,v in cur_fmt.items() if v is not None})
+                atts = parse_args('', {k:v for k,v in cur_fmt.items() if 
+                                  v is not None})
                 bases.append(BaseFmtStr(x, atts=atts))
             else:
                 raise Exception("logic error")
@@ -110,17 +111,21 @@ class FmtStr(object):
 
     def __add__(self, other):
         if isinstance(other, FmtStr):
-            return FmtStr(*(copy.deepcopy(x) for x in (self.fmtstrs + other.fmtstrs)))
+            return FmtStr(*(copy.deepcopy(x) for 
+                          x in (self.fmtstrs + other.fmtstrs)))
         elif isinstance(other, basestring):
-            return FmtStr(*(copy.deepcopy(x) for x in (self.fmtstrs + [BaseFmtStr(other)])))
+            return FmtStr(*(copy.deepcopy(x) for 
+                          x in (self.fmtstrs + [BaseFmtStr(other)])))
         else:
             raise TypeError('Can\'t add %r and %r' % (self, other))
 
     def __radd__(self, other):
         if isinstance(other, FmtStr):
-            return FmtStr(*(copy.deepcopy(x) for x in (other.fmtstrs + self.fmtstrs)))
+            return FmtStr(*(copy.deepcopy(x) for 
+                          x in (other.fmtstrs + self.fmtstrs)))
         elif isinstance(other, basestring):
-            return FmtStr(*(copy.deepcopy(x) for x in ([BaseFmtStr(other)] + self.fmtstrs)))
+            return FmtStr(*(copy.deepcopy(x) for 
+                          x in ([BaseFmtStr(other)] + self.fmtstrs)))
         else:
             raise TypeError('Can\'t add those')
 
@@ -132,7 +137,8 @@ class FmtStr(object):
         first = self.fmtstrs[0]
         for att in first.atts:
             #TODO how to write this without the '???'?
-            if all(fs.atts.get(att, '???') == first.atts[att] for fs in self.fmtstrs if len(fs) > 0):
+            if all(fs.atts.get(att, '???') == first.atts[att] for 
+                   fs in self.fmtstrs if len(fs) > 0):
                 atts[att] = first.atts[att]
         return atts
 
@@ -158,7 +164,8 @@ class FmtStr(object):
         output = ''
         for fs in self.fmtstrs:
             if index.start < counter + len(fs) and index.stop > counter:
-                s_part = fs.s[max(0, index.start - counter):index.stop - counter]
+                s_part = fs.s[max(0, index.start - counter):
+                              index.stop - counter]
                 piece = str(BaseFmtStr(s_part, fs.atts))
                 output += piece
             counter += len(fs)
@@ -179,7 +186,6 @@ class FmtStr(object):
                 start = max(0, index.start - counter)
                 end = index.stop - counter
                 front = BaseFmtStr(fs.s[:start], fs.atts)
-                # stuff
                 new = value
                 back = BaseFmtStr(fs.s[end:], fs.atts)
                 if len(front) > 0:
