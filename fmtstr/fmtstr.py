@@ -224,7 +224,7 @@ def parse_args(args, kwargs):
             if 'fg' in kwargs: raise ValueError("fg specified twice")
             kwargs['fg'] = FG_COLORS[arg]
         elif arg.lower().startswith('on_') and arg[3:].lower() in BG_COLORS:
-            if 'bg' in kwargs: raise ValueError("fg specified twice")
+            if 'bg' in kwargs: raise ValueError("bg specified twice")
             kwargs['bg'] = BG_COLORS[arg[3:]]
         elif arg.lower() in STYLES:
             kwargs[arg] = True
